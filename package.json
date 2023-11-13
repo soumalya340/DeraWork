@@ -8,6 +8,8 @@
   "dependencies": {
     "@nomiclabs/hardhat-web3": "^2.0.0",
     "@openzeppelin/contracts": "^4.8.0",
+    "@uniswap/v3-core": "^1.0.1",
+    "@uniswap/v3-periphery": "^1.4.4",
     "js-yaml": "^4.1.0",
     "web3": "^1.7.0"
   },
@@ -15,7 +17,7 @@
     "test": "hardhat test",
     "coverage": "hardhat coverage",
     "compile": "hardhat compile",
-    "launch": "hardhat run scripts/launch/launch.js"
+    "launch": "hardhat run scripts/launch.js"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.4",

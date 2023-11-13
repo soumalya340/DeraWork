@@ -22,15 +22,11 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-
-// Testnet: sepolia, mumbai, bnbTest , arbGoerli , optiGoerli, baseGoerli
-// Mainnet: Ethereum, Polygon,, Binance ,Arbitrum, Optimism,Base
-// API_KEY & PRIVATE_KEY
-
 // TESTNET
 const MATICMUM_RPC_URL = process.env.MATICMUM_RPC_URL || "https://polygon-mumbai.g.alchemy.com/v2/api-key"
 // MAINNET
 const POLYGON_RPC_URL = process.env.POLYGON_RPC_URL || "https://polygon-mainnet.g.alchemy.com/v2/api-key"
+const ETHEREUM_RPC_URL = process.env.ETHEREUM_RPC_URL || "https://eth-mainnet.g.alchemy.com/v2/p7N2RRFqkE6dEip8z2Rv54tXnKvnrQBH"
 
 const MNEMONIC = process.env.MNEMONIC || "ajkskjfjksjkf ssfaasff asklkfl klfkas dfklhao asfj sfk klsfjs fkjs"
 const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -38,28 +34,39 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || "lklsdkskldjklgdklkld"
 
 module.exports = {
-  solidity: {
-    version: "0.8.17",
+  solidity : {
+      compilers: [
+        {
+          version: "0.8.17",
+        },
+        {
+            version: "0.5.12",
+        },      
+      ],
+    },
     settings: {
       optimizer: {
         enabled: true,
         runs: 200,
       },
-    },
   },
+
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
-      initialBaseFeePerGas: 0,// workaround from https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136 .Remove when that issue is closed.
+      chainId: 31337,
+      forking: {
+        url: ETHEREUM_RPC_URL,
+      },
     },
     // TESTNET NETWORKS
     maticmum: {
       networkId: 80001,
       url: MATICMUM_RPC_URL,
-      // accounts: [PRIVATE_KEY],
-      accounts: {
-        mnemonic: MNEMONIC,
-      },
+      accounts: [PRIVATE_KEY],
+      // accounts: {
+      //   mnemonic: MNEMONIC,
+      // },
     },
     // MAINNET NETWORKS
     polygon: {

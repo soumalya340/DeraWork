@@ -3,10 +3,20 @@
 /* eslint-disable */
 export type { Ownable } from "./Ownable";
 export type { IERC20 } from "./IERC20";
-export type { IDefiProtocol } from "./IDefiProtocol";
+export type { IUniswapV3SwapCallback } from "./IUniswapV3SwapCallback";
+export type { ISwapRouter } from "./ISwapRouter";
+export type { IToken } from "./IToken";
+export type { IVault } from "./IVault";
+export type { IWeth } from "./IWeth";
+export type { Swap } from "./Swap";
 export type { Treasury } from "./Treasury";
 
 export { Ownable__factory } from "./factories/Ownable__factory";
 export { IERC20__factory } from "./factories/IERC20__factory";
-export { IDefiProtocol__factory } from "./factories/IDefiProtocol__factory";
+export { IUniswapV3SwapCallback__factory } from "./factories/IUniswapV3SwapCallback__factory";
+export { ISwapRouter__factory } from "./factories/ISwapRouter__factory";
+export { IToken__factory } from "./factories/IToken__factory";
+export { IVault__factory } from "./factories/IVault__factory";
+export { IWeth__factory } from "./factories/IWeth__factory";
+export { Swap__factory } from "./factories/Swap__factory";
 export { Treasury__factory } from "./factories/Treasury__factory";

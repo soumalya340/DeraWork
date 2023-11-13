@@ -20,105 +20,125 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface TreasuryInterface extends utils.Interface {
   contractName: "Treasury";
   functions: {
-    "addDefiProtocol(address)": FunctionFragment;
-    "allocations(address)": FunctionFragment;
+    "DAI()": FunctionFragment;
+    "USDC()": FunctionFragment;
+    "USDT()": FunctionFragment;
     "calculateTotalYield()": FunctionFragment;
-    "defiProtocols(uint256)": FunctionFragment;
-    "depositToProtocol(address,uint256)": FunctionFragment;
-    "owner()": FunctionFragment;
-    "renounceOwnership()": FunctionFragment;
-    "setAllocation(address,uint256)": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
-    "withdrawFromProtocol(address,uint256)": FunctionFragment;
+    "depositToProtocol(address,address)": FunctionFragment;
+    "depositToken(address,uint256)": FunctionFragment;
+    "protocolAllocation(address)": FunctionFragment;
+    "setAllocation(address,uint256,uint256,uint256)": FunctionFragment;
+    "userFunds(address)": FunctionFragment;
+    "vaults(uint256)": FunctionFragment;
+    "withdraw(address)": FunctionFragment;
+    "withdrawFromProtocol(address)": FunctionFragment;
+    "yeildPerVault(address)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "addDefiProtocol",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "allocations", values: [string]): string;
+  encodeFunctionData(functionFragment: "DAI", values?: undefined): string;
+  encodeFunctionData(functionFragment: "USDC", values?: undefined): string;
+  encodeFunctionData(functionFragment: "USDT", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "calculateTotalYield",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "defiProtocols",
+    functionFragment: "depositToProtocol",
+    values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositToken",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "protocolAllocation",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setAllocation",
+    values: [string, BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "userFunds", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "vaults",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "withdraw", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "depositToProtocol",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setAllocation",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
+    functionFragment: "withdrawFromProtocol",
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawFromProtocol",
-    values: [string, BigNumberish]
+    functionFragment: "yeildPerVault",
+    values: [string]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "addDefiProtocol",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "allocations",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "DAI", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "USDC", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "USDT", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "calculateTotalYield",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "defiProtocols",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "depositToProtocol",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "renounceOwnership",
+    functionFragment: "depositToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "protocolAllocation",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "setAllocation",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "userFunds", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "vaults", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "transferOwnership",
+    functionFragment: "withdrawFromProtocol",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawFromProtocol",
+    functionFragment: "yeildPerVault",
     data: BytesLike
   ): Result;
 
   events: {
-    "OwnershipTransferred(address,address)": EventFragment;
+    "UserDeposit(address,uint256,uint8)": EventFragment;
+    "VaultDeposit(address,uint256,uint8)": EventFragment;
+    "VaultWithdraw(address,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UserDeposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VaultDeposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "VaultWithdraw"): EventFragment;
 }
 
-export type OwnershipTransferredEvent = TypedEvent<
-  [string, string],
-  { previousOwner: string; newOwner: string }
+export type UserDepositEvent = TypedEvent<
+  [string, BigNumber, number],
+  { staker: string; amount: BigNumber; tokenRecieved: number }
 >;
 
-export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>;
+export type UserDepositEventFilter = TypedEventFilter<UserDepositEvent>;
+
+export type VaultDepositEvent = TypedEvent<
+  [string, BigNumber, number],
+  { vault: string; amount: BigNumber; tokenSubmit: number }
+>;
+
+export type VaultDepositEventFilter = TypedEventFilter<VaultDepositEvent>;
+
+export type VaultWithdrawEvent = TypedEvent<
+  [string, BigNumber],
+  { vault: string; amountRecieved: BigNumber }
+>;
+
+export type VaultWithdrawEventFilter = TypedEventFilter<VaultWithdrawEvent>;
 
 export interface Treasury extends BaseContract {
   contractName: "Treasury";
@@ -148,235 +168,373 @@ export interface Treasury extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    addDefiProtocol(
-      protocol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    DAI(overrides?: CallOverrides): Promise<[string]>;
 
-    allocations(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    USDC(overrides?: CallOverrides): Promise<[string]>;
+
+    USDT(overrides?: CallOverrides): Promise<[string]>;
 
     calculateTotalYield(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { totalYield: BigNumber }>;
 
-    defiProtocols(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
     depositToProtocol(
+      token: string,
+      vault: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    depositToken(
       token: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    owner(overrides?: CallOverrides): Promise<[string]>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    protocolAllocation(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber] & {
+        dai: BigNumber;
+        usdc: BigNumber;
+        usdt: BigNumber;
+      }
+    >;
 
     setAllocation(
-      protocol: string,
-      percentage: BigNumberish,
+      vault: string,
+      daiPercentage: BigNumberish,
+      usdcPercentage: BigNumberish,
+      usdtPercentage: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    transferOwnership(
-      newOwner: string,
+    userFunds(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber] & {
+        dai: BigNumber;
+        usdc: BigNumber;
+        usdt: BigNumber;
+      }
+    >;
+
+    vaults(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+
+    withdraw(
+      token: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     withdrawFromProtocol(
-      token: string,
-      amount: BigNumberish,
+      vault: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    yeildPerVault(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, string] & {
+        amountAllocated: BigNumber;
+        amountRecieved: BigNumber;
+        yeildGenerated: BigNumber;
+        coinAddr: string;
+      }
+    >;
   };
 
-  addDefiProtocol(
-    protocol: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  DAI(overrides?: CallOverrides): Promise<string>;
 
-  allocations(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+  USDC(overrides?: CallOverrides): Promise<string>;
+
+  USDT(overrides?: CallOverrides): Promise<string>;
 
   calculateTotalYield(overrides?: CallOverrides): Promise<BigNumber>;
 
-  defiProtocols(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
   depositToProtocol(
+    token: string,
+    vault: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  depositToken(
     token: string,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  owner(overrides?: CallOverrides): Promise<string>;
-
-  renounceOwnership(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  protocolAllocation(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber] & {
+      dai: BigNumber;
+      usdc: BigNumber;
+      usdt: BigNumber;
+    }
+  >;
 
   setAllocation(
-    protocol: string,
-    percentage: BigNumberish,
+    vault: string,
+    daiPercentage: BigNumberish,
+    usdcPercentage: BigNumberish,
+    usdtPercentage: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  transferOwnership(
-    newOwner: string,
+  userFunds(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber] & {
+      dai: BigNumber;
+      usdc: BigNumber;
+      usdt: BigNumber;
+    }
+  >;
+
+  vaults(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  withdraw(
+    token: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   withdrawFromProtocol(
-    token: string,
-    amount: BigNumberish,
+    vault: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  callStatic: {
-    addDefiProtocol(protocol: string, overrides?: CallOverrides): Promise<void>;
+  yeildPerVault(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, string] & {
+      amountAllocated: BigNumber;
+      amountRecieved: BigNumber;
+      yeildGenerated: BigNumber;
+      coinAddr: string;
+    }
+  >;
 
-    allocations(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+  callStatic: {
+    DAI(overrides?: CallOverrides): Promise<string>;
+
+    USDC(overrides?: CallOverrides): Promise<string>;
+
+    USDT(overrides?: CallOverrides): Promise<string>;
 
     calculateTotalYield(overrides?: CallOverrides): Promise<BigNumber>;
 
-    defiProtocols(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
     depositToProtocol(
       token: string,
-      amount: BigNumberish,
+      vault: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    owner(overrides?: CallOverrides): Promise<string>;
-
-    renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    setAllocation(
-      protocol: string,
-      percentage: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    withdrawFromProtocol(
+    depositToken(
       token: string,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    protocolAllocation(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber] & {
+        dai: BigNumber;
+        usdc: BigNumber;
+        usdt: BigNumber;
+      }
+    >;
+
+    setAllocation(
+      vault: string,
+      daiPercentage: BigNumberish,
+      usdcPercentage: BigNumberish,
+      usdtPercentage: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    userFunds(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber] & {
+        dai: BigNumber;
+        usdc: BigNumber;
+        usdt: BigNumber;
+      }
+    >;
+
+    vaults(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    withdraw(token: string, overrides?: CallOverrides): Promise<void>;
+
+    withdrawFromProtocol(
+      vault: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    yeildPerVault(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, string] & {
+        amountAllocated: BigNumber;
+        amountRecieved: BigNumber;
+        yeildGenerated: BigNumber;
+        coinAddr: string;
+      }
+    >;
   };
 
   filters: {
-    "OwnershipTransferred(address,address)"(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): OwnershipTransferredEventFilter;
-    OwnershipTransferred(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): OwnershipTransferredEventFilter;
+    "UserDeposit(address,uint256,uint8)"(
+      staker?: string | null,
+      amount?: BigNumberish | null,
+      tokenRecieved?: null
+    ): UserDepositEventFilter;
+    UserDeposit(
+      staker?: string | null,
+      amount?: BigNumberish | null,
+      tokenRecieved?: null
+    ): UserDepositEventFilter;
+
+    "VaultDeposit(address,uint256,uint8)"(
+      vault?: string | null,
+      amount?: BigNumberish | null,
+      tokenSubmit?: null
+    ): VaultDepositEventFilter;
+    VaultDeposit(
+      vault?: string | null,
+      amount?: BigNumberish | null,
+      tokenSubmit?: null
+    ): VaultDepositEventFilter;
+
+    "VaultWithdraw(address,uint256)"(
+      vault?: string | null,
+      amountRecieved?: BigNumberish | null
+    ): VaultWithdrawEventFilter;
+    VaultWithdraw(
+      vault?: string | null,
+      amountRecieved?: BigNumberish | null
+    ): VaultWithdrawEventFilter;
   };
 
   estimateGas: {
-    addDefiProtocol(
-      protocol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    DAI(overrides?: CallOverrides): Promise<BigNumber>;
 
-    allocations(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    USDC(overrides?: CallOverrides): Promise<BigNumber>;
+
+    USDT(overrides?: CallOverrides): Promise<BigNumber>;
 
     calculateTotalYield(overrides?: CallOverrides): Promise<BigNumber>;
 
-    defiProtocols(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
+    depositToProtocol(
+      token: string,
+      vault: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    depositToProtocol(
+    depositToken(
       token: string,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    protocolAllocation(
+      arg0: string,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     setAllocation(
-      protocol: string,
-      percentage: BigNumberish,
+      vault: string,
+      daiPercentage: BigNumberish,
+      usdcPercentage: BigNumberish,
+      usdtPercentage: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    transferOwnership(
-      newOwner: string,
+    userFunds(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    vaults(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdraw(
+      token: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     withdrawFromProtocol(
-      token: string,
-      amount: BigNumberish,
+      vault: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    yeildPerVault(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    addDefiProtocol(
-      protocol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    DAI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    allocations(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    USDC(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    USDT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     calculateTotalYield(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    defiProtocols(
+    depositToProtocol(
+      token: string,
+      vault: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    depositToken(
+      token: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    protocolAllocation(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    setAllocation(
+      vault: string,
+      daiPercentage: BigNumberish,
+      usdcPercentage: BigNumberish,
+      usdtPercentage: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    userFunds(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    vaults(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    depositToProtocol(
+    withdraw(
       token: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setAllocation(
-      protocol: string,
-      percentage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    transferOwnership(
-      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     withdrawFromProtocol(
-      token: string,
-      amount: BigNumberish,
+      vault: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    yeildPerVault(
+      arg0: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

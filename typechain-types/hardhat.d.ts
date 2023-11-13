@@ -21,9 +21,33 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "IDefiProtocol",
+      name: "IUniswapV3SwapCallback",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IDefiProtocol__factory>;
+    ): Promise<Contracts.IUniswapV3SwapCallback__factory>;
+    getContractFactory(
+      name: "ISwapRouter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISwapRouter__factory>;
+    getContractFactory(
+      name: "IToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IToken__factory>;
+    getContractFactory(
+      name: "IVault",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVault__factory>;
+    getContractFactory(
+      name: "IWeth",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IWeth__factory>;
+    getContractFactory(
+      name: "Swap",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Swap__factory>;
+    getContractFactory(
+      name: "IVault",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IVault__factory>;
     getContractFactory(
       name: "Treasury",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -40,10 +64,40 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
-      name: "IDefiProtocol",
+      name: "IUniswapV3SwapCallback",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IDefiProtocol>;
+    ): Promise<Contracts.IUniswapV3SwapCallback>;
+    getContractAt(
+      name: "ISwapRouter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISwapRouter>;
+    getContractAt(
+      name: "IToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IToken>;
+    getContractAt(
+      name: "IVault",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVault>;
+    getContractAt(
+      name: "IWeth",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IWeth>;
+    getContractAt(
+      name: "Swap",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Swap>;
+    getContractAt(
+      name: "IVault",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IVault>;
     getContractAt(
       name: "Treasury",
       address: string,
